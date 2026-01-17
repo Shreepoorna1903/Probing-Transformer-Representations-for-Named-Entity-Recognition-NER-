@@ -48,4 +48,81 @@ We work with a **subset of 1,000 sentences** for computational efficiency.
 - For each token, we extract a **768-dimensional vector from every layer**
 
 Final representation shape:
+X ∈ ℝ[N_tokens, 13, 768]
+y ∈ ℝ[N_tokens]
+
+---
+
+### 3. NER Probing Experiment
+For each BERT layer:
+- Train a **Logistic Regression** classifier
+- Input: token embeddings from that layer
+- Output: NER label
+- Evaluation: **10-fold cross-validation**
+- Metric: **token-level accuracy**
+
+---
+
+### 4. Baseline Comparison
+- Baseline: always predict the majority class (`O`)
+- Used to show that probe performance is not due to class imbalance
+
+---
+
+### 5. Capitalization Probing (Auxiliary)
+- Probes whether a token is **capitalized**
+- Shows that **surface features are captured early**, while semantic features emerge later
+- Highlights representational differences across layers
+
+---
+
+## Key Results
+
+- Token-level NER accuracy increases steadily across layers
+- **Best performance occurs in upper transformer layers**
+- Peak accuracy: **97.35%**
+- Early layers encode surface features (e.g., capitalization)
+- Deeper layers encode **semantic entity information**
+
+These findings align with known representational hierarchies in transformer models.
+
+---
+
+## How to Run
+
+1. Open `bert_layerwise_probing_ner.ipynb` in **Google Colab**
+2. Set runtime to **GPU or CPU** (GPU not strictly required)
+3. Run cells top-to-bottom:
+   - Dataset loading
+   - Tokenization + alignment
+   - Representation extraction
+   - Layer-wise probing
+   - Baseline and capitalization experiments
+
+All dependencies are installed inside the notebook.
+
+---
+
+## Tech Stack
+
+- Python
+- PyTorch
+- HuggingFace Transformers & Datasets
+- scikit-learn
+- NumPy
+
+---
+
+## Notes
+
+- This is an **analysis / interpretability study**, not a fine-tuned NER system
+- Models are intentionally simple to isolate representational content
+- Results depend on dataset subset size and cross-validation randomness
+
+---
+
+## Reference
+
+- Devlin et al., *BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding*
+- CoNLL-2003 Shared Task: Language-Independent Named Entity Recognition
 
